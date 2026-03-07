@@ -3,14 +3,14 @@ Step 1: Get API Keys
 1. OpenRouter : https://openrouter.ai → Sign up, then Copy API key
 2. Brave Search : https://api.search.brave.com → Sign up → Copy API key
 
-### Step 2: Edit .env File
+Step 2: Conigure environment variables
 Open `.env` file and replace:
 ```
 OPENROUTER_API_KEY=your_actual_key_here
 BRAVE_SEARCH_API_KEY=your_actual_key_here
 ```
 
-### Step 3: Backend (Terminal 1)
+Step 3: Backend (Terminal 1)
 ```bash
 # Windows:
 python -m venv venv
@@ -26,31 +26,31 @@ python app.py
 ```
 Expected: `Running on http://localhost:5000`
 
-### Step 4: Frontend (Terminal 2)
+Step 4: Frontend (Terminal 2)
 ```bash
 npm install
 npm start
 ```
 Expected: Opens http://localhost:3000 automatically
 
-### Step 5: Use It!
+Step 5: Using the Application
 - Type a research topic
 - Click "Research"
-- Get professional report!
+- Get professional report
 
 ---
 
-## 📊 What's Inside
+Project Architecture
 
-- **Backend**: Flask + Python (app.py)
-- **Frontend**: React + Tailwind CSS
-- **AI Model**: Llama 3.3 70B (via OpenRouter)
-- **Search**: Brave Search API
-- **4-Stage Pipeline**: Plan → Search → Analyze → Report
+- Backend: Flask + Python (app.py)
+- Frontend: React + Tailwind CSS
+- AI Model: Llama 3.3 70B (via OpenRouter)
+- Search: Brave Search API
+- Pipeline: Plan → Search → Analyze → Report
 
 ---
 
-## 🆘 Troubleshooting
+Troubleshooting
 
 | Error | Solution |
 |-------|----------|
@@ -60,9 +60,7 @@ Expected: Opens http://localhost:3000 automatically
 | "ModuleNotFoundError" | Run: `pip install -r requirements.txt` |
 
 ---
-
-## 📁 Folder Structure
-
+Folder Structure
 ```
 autonomous-research-agent/
 ├── app.py                 ← Backend
@@ -78,9 +76,7 @@ autonomous-research-agent/
 └── venv/                 ← Auto-created
 ```
 
----
-
-## 🎯 How It Works
+System Workflow
 
 ```
 You type topic
@@ -98,37 +94,9 @@ STAGE 4: Reporting → Llama synthesizes report
 Frontend displays beautiful report
 ```
 
----
-
-## ✅ Verification
+Verification
 
 1. Backend health: http://localhost:5000/api/health → should show `{"status":"ok"}`
 2. Frontend loads: http://localhost:3000 → should see UI
 3. Can type topic and click Research
 4. Report displays with findings and sources
-
----
-
-## 💡 Pro Tips
-
-- First research is slower (rate limiting), subsequent ones are faster
-- Be specific with topics (works better than generic ones)
-- Check source credibility scores
-- Export JSON for custom analysis
-
----
-
-## 🎓 For Interviews (Deriv & Others)
-
-This project demonstrates:
-- ✅ Agentic AI systems (autonomous planning & execution)
-- ✅ Tool orchestration (API coordination)
-- ✅ RAG implementation (retrieval + augmentation + generation)
-- ✅ Production thinking (error handling, quality control)
-- ✅ Full-stack development (backend + frontend)
-
----
-
-**You're all set! Start researching! 🚀**
-
-Questions? Check troubleshooting section or review architecture above.
