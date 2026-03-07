@@ -82,7 +82,7 @@ export default function ResearchAgent() {
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg">
         <div className="max-w-6xl mx-auto px-6 py-12">
-          <h1 className="text-4xl font-bold mb-3">🤖 Autonomous Research Agent</h1>
+          <h1 className="text-4xl font-bold mb-3">Autonomous Research Agent</h1>
           <p className="text-blue-100 text-lg">
             AI-powered research that searches multiple sources, analyzes credibility, and generates professional reports in minutes.
           </p>
