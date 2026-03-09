@@ -212,6 +212,15 @@ def health():
 # ============================================
 # SERVE REACT FRONTEND
 # ============================================
+
+# CRA puts JS/CSS inside build/static/js and build/static/css
+# This MUST come before the catch-all route below
+@app.route('/static/<path:filename>')
+def serve_static_assets(filename):
+    return send_from_directory(os.path.join(STATIC_DIR, 'static'), filename)
+
+
+# Catch-all: serves index.html for all other routes (React Router)
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_react(path):
