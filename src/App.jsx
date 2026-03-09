@@ -36,7 +36,8 @@ export default function ResearchAgent() {
       }
 
       // Call backend API
-      const response = await fetch('http://localhost:5000/api/research', {
+      const API_URL = process.env.REACT_APP_API_URL || '';
+      const response = await fetch(`${API_URL}/api/research`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ topic })
@@ -60,7 +61,7 @@ export default function ResearchAgent() {
 
   const downloadReport = () => {
     if (!report) return;
-    
+
     const element = document.createElement('a');
     const file = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
     element.href = URL.createObjectURL(file);
@@ -91,7 +92,7 @@ export default function ResearchAgent() {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-12">
-        
+
         {/* Input Section */}
         <div className="bg-slate-800 rounded-xl border border-slate-700 p-8 mb-8 shadow-2xl">
           <label className="block text-white text-sm font-semibold mb-3">Research Topic</label>
@@ -123,14 +124,14 @@ export default function ResearchAgent() {
               )}
             </button>
           </div>
-          
+
           {/* Example Topics */}
           {!loading && !report && (
             <div className="text-slate-400 text-xs mt-2">
               <span className="font-semibold">Example topics:</span> AI in Healthcare • Climate Change • Cryptocurrency • Remote Work • Renewable Energy • Machine Learning in Finance
             </div>
           )}
-          
+
           {error && (
             <div className="mt-3 p-3 bg-red-900 text-red-200 rounded-lg flex items-start gap-3">
               <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
@@ -241,9 +242,9 @@ export default function ResearchAgent() {
                         <div className="text-slate-400 font-bold text-sm min-w-fit">{idx + 1}.</div>
                         <div className="flex-1 min-w-0">
                           <p className="text-white font-semibold text-sm break-words">{source.title}</p>
-                          <a 
-                            href={source.url} 
-                            target="_blank" 
+                          <a
+                            href={source.url}
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-400 hover:text-blue-300 text-xs mt-1 block break-all"
                           >
@@ -253,13 +254,12 @@ export default function ResearchAgent() {
                             <span className="inline-block bg-slate-800 text-slate-300 text-xs px-2 py-1 rounded">
                               {source.source}
                             </span>
-                            <span className={`inline-block text-xs px-3 py-1 rounded font-semibold ${
-                              source.credibility_score >= 8 
-                                ? 'bg-green-900 text-green-200' 
+                            <span className={`inline-block text-xs px-3 py-1 rounded font-semibold ${source.credibility_score >= 8
+                                ? 'bg-green-900 text-green-200'
                                 : source.credibility_score >= 6
-                                ? 'bg-yellow-900 text-yellow-200'
-                                : 'bg-red-900 text-red-200'
-                            }`}>
+                                  ? 'bg-yellow-900 text-yellow-200'
+                                  : 'bg-red-900 text-red-200'
+                              }`}>
                               ⭐ {source.credibility_score}/10
                             </span>
                           </div>

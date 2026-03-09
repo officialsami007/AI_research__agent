@@ -4,6 +4,7 @@ import json
 import os
 from dotenv import load_dotenv
 import requests
+from flask import send_from_directory
 
 load_dotenv()
 GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
@@ -370,3 +371,10 @@ if __name__ == '__main__':
     print("   - SERPER_API_KEY (optional) - Get from https://serper.dev")
     print("\n✨ Using Groq Llama 3.1 70B (FREE, NO RATE LIMITS!)")
     app.run(debug=True, port=5000)
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_react(path):
+    if path and os.path.exists(os.path.join('static', path)):
+        return send_from_directory('static', path)
+    return send_from_directory('static', 'index.html')
