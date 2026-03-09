@@ -359,22 +359,19 @@ def research():
 
 @app.route('/api/health', methods=['GET'])
 def health():
-    """Health check endpoint"""
     return jsonify({"status": "ok", "message": "Backend is running"}), 200
 
 
-if __name__ == '__main__':
-    print("🚀 Autonomous Research Agent Backend Starting...")
-    print("📍 Running on http://localhost:5000")
-    print("🔐 API Keys Required:")
-    print("   - GROQ_API_KEY (required) - Get from https://console.groq.com")
-    print("   - SERPER_API_KEY (optional) - Get from https://serper.dev")
-    print("\n✨ Using Groq Llama 3.1 70B (FREE, NO RATE LIMITS!)")
-    app.run(debug=True, port=5000)
-
+# ── Serve React frontend ─────────────────────────────────────────────────────
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_react(path):
     if path and os.path.exists(os.path.join('static', path)):
         return send_from_directory('static', path)
     return send_from_directory('static', 'index.html')
+
+
+# ── Run ──────────────────────────────────────────────────────────────────────
+if __name__ == '__main__':
+    print("🚀 Autonomous Research Agent Backend Starting...")
+    app.run(debug=True, port=5000)
