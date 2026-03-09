@@ -8,12 +8,13 @@ import requests
 load_dotenv()
 GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 
-app = Flask(__name__)
+# static_folder=None disables Flask's built-in /static route — we handle everything ourselves
+app = Flask(__name__, static_folder=None)
 CORS(app)
 
-# Absolute path to static folder — works in Docker and locally
+# Points to the 'build/' folder copied in by Docker
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_DIR = os.path.join(BASE_DIR, "static")
+BUILD_DIR = os.path.join(BASE_DIR, "build")
 
 
 # ============================================
@@ -206,32 +207,35 @@ def research():
 
 @app.route('/api/health', methods=['GET'])
 def health():
-    return jsonify({"status": "ok", "message": "Backend is running", "static_exists": os.path.isdir(STATIC_DIR)}), 200
+    return jsonify({"status": "ok", "message": "Backend is running", "build_exists": os.path.isdir(BUILD_DIR)}), 200
 
 
 # ============================================
 # SERVE REACT FRONTEND
+# CRA build structure:
+#   build/index.html
+#   build/static/js/main.xxx.js
+#   build/static/css/main.xxx.css
 # ============================================
 
-# CRA puts JS/CSS inside build/static/js and build/static/css
-# This MUST come before the catch-all route below
+# Serve JS/CSS/media from build/static/
 @app.route('/static/<path:filename>')
 def serve_static_assets(filename):
-    return send_from_directory(os.path.join(STATIC_DIR, 'static'), filename)
+    return send_from_directory(os.path.join(BUILD_DIR, 'static'), filename)
 
+# Serve other root-level files (manifest.json, favicon.ico, etc.)
+@app.route('/<path:filename>')
+def serve_root_files(filename):
+    filepath = os.path.join(BUILD_DIR, filename)
+    if os.path.exists(filepath) and os.path.isfile(filepath):
+        return send_from_directory(BUILD_DIR, filename)
+    # Not a real file — return index.html for React Router
+    return send_file(os.path.join(BUILD_DIR, 'index.html'))
 
-# Catch-all: serves index.html for all other routes (React Router)
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve_react(path):
-    if not os.path.isdir(STATIC_DIR):
-        return jsonify({"error": "Frontend not built", "static_dir": STATIC_DIR}), 404
-
-    target = os.path.join(STATIC_DIR, path)
-    if path and os.path.exists(target) and os.path.isfile(target):
-        return send_from_directory(STATIC_DIR, path)
-
-    return send_file(os.path.join(STATIC_DIR, 'index.html'))
+# Root
+@app.route('/')
+def serve_index():
+    return send_file(os.path.join(BUILD_DIR, 'index.html'))
 
 
 # ============================================
@@ -239,6 +243,6 @@ def serve_react(path):
 # ============================================
 if __name__ == '__main__':
     print("🚀 Autonomous Research Agent Backend Starting...")
-    print(f"📁 Static dir: {STATIC_DIR} ({'EXISTS' if os.path.isdir(STATIC_DIR) else 'NOT FOUND'})")
+    print(f"📁 Build dir: {BUILD_DIR} ({'EXISTS' if os.path.isdir(BUILD_DIR) else 'NOT FOUND'})")
     print("📍 Running on http://localhost:5000")
     app.run(debug=True, port=5000)
