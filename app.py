@@ -17,9 +17,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BUILD_DIR = os.path.join(BASE_DIR, "build")
 
 
-# ============================================
-# STAGE 1: RESEARCH PLANNER (Using Groq)
-# ============================================
 def stage1_planning(topic):
     print(f"[STAGE 1] Planning research strategy for: {topic}")
     groq_key = os.getenv("GROQ_API_KEY")
@@ -54,9 +51,6 @@ Return ONLY the JSON array, no other text."""
     return queries
 
 
-# ============================================
-# STAGE 2: WEB SEARCH (Using Serper Free API)
-# ============================================
 def stage2_searching(queries):
     print(f"[STAGE 2] Searching for articles...")
     articles = []
@@ -100,9 +94,6 @@ def stage2_searching(queries):
     return articles[:20]
 
 
-# ============================================
-# STAGE 3: ANALYZING SOURCES (Using Groq)
-# ============================================
 def stage3_analyzing(articles, topic):
     print(f"[STAGE 3] Analyzing {len(articles)} articles...")
     groq_key = os.getenv("GROQ_API_KEY")
@@ -137,9 +128,6 @@ Return ONLY valid JSON (no markdown):
     return analyzed
 
 
-# ============================================
-# STAGE 4: GENERATING REPORT (Using Groq)
-# ============================================
 def stage4_reporting(topic, analyzed_articles):
     print(f"[STAGE 4] Generating report...")
     groq_key = os.getenv("GROQ_API_KEY")
@@ -177,9 +165,6 @@ Return ONLY this JSON (no markdown):
     return report
 
 
-# ============================================
-# API ENDPOINTS
-# ============================================
 @app.route('/api/research', methods=['POST'])
 def research():
     try:
@@ -210,20 +195,10 @@ def health():
     return jsonify({"status": "ok", "message": "Backend is running", "build_exists": os.path.isdir(BUILD_DIR)}), 200
 
 
-# ============================================
-# SERVE REACT FRONTEND
-# CRA build structure:
-#   build/index.html
-#   build/static/js/main.xxx.js
-#   build/static/css/main.xxx.css
-# ============================================
-
-# Serve JS/CSS/media from build/static/
 @app.route('/static/<path:filename>')
 def serve_static_assets(filename):
     return send_from_directory(os.path.join(BUILD_DIR, 'static'), filename)
 
-# Serve other root-level files (manifest.json, favicon.ico, etc.)
 @app.route('/<path:filename>')
 def serve_root_files(filename):
     filepath = os.path.join(BUILD_DIR, filename)
@@ -232,15 +207,11 @@ def serve_root_files(filename):
     # Not a real file — return index.html for React Router
     return send_file(os.path.join(BUILD_DIR, 'index.html'))
 
-# Root
 @app.route('/')
 def serve_index():
     return send_file(os.path.join(BUILD_DIR, 'index.html'))
 
 
-# ============================================
-# RUN
-# ============================================
 if __name__ == '__main__':
     print("🚀 Autonomous Research Agent Backend Starting...")
     print(f"📁 Build dir: {BUILD_DIR} ({'EXISTS' if os.path.isdir(BUILD_DIR) else 'NOT FOUND'})")
