@@ -1,6 +1,3 @@
-# ╔══════════════════════════════════════════════════════════════╗
-# ║  STAGE 1 — Build the React frontend (Create React App)      ║
-# ╚══════════════════════════════════════════════════════════════╝
 FROM node:20-slim AS frontend-build
 
 WORKDIR /frontend
@@ -15,12 +12,8 @@ COPY tailwind.config.js postcss.config.js ./
 ENV REACT_APP_API_URL=""
 
 RUN npm run build
-# Output: /frontend/build/
 
 
-# ╔══════════════════════════════════════════════════════════════╗
-# ║  STAGE 2 — Python Flask backend + serve built frontend      ║
-# ╚══════════════════════════════════════════════════════════════╝
 FROM python:3.11-slim
 
 WORKDIR /app
