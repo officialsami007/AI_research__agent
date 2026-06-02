@@ -29,7 +29,7 @@ The application is containerized with **Docker** and deployed on **Render**, wit
 
 ## Live Demo
 
-🌐 **[https://your-deployed-url.onrender.com](https://your-deployed-url.onrender.com)**
+🌐 **[https://ai-research-agent-x0il.onrender.com/](https://ai-research-agent-x0il.onrender.com/)**
 
 > Hosted on Render's free tier. If the page takes ~30 seconds to load, the server is waking from sleep — this is expected behaviour on free-tier hosting.
 
