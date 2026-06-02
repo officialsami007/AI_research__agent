@@ -11,7 +11,7 @@
 
 **Enter any research topic and receive a fully structured, AI-generated report — backed by real web sources, credibility analysis, and multi-stage reasoning.**
 
-[🚀 Live Demo](https://your-deployed-url.onrender.com) · [📖 How It Works](#how-it-works) · [⚙️ Local Setup](#local-setup) · [🏗️ Architecture](#architecture)
+[🚀 Live Demo](https://ai-research-agent-x0il.onrender.com/) · [📖 How It Works](#how-it-works) · [⚙️ Local Setup](#local-setup) · [🏗️ Architecture](#architecture)
 
 </div>
 
